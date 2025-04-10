@@ -1,8 +1,7 @@
-﻿using lab7;
-using System;
+﻿using System;
 
 namespace lab7
-{
+{  
   public static class SquareMatrixExtension
   {
     public static SquareMatrix Transpose(this SquareMatrix matrix)

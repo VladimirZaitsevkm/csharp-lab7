@@ -9,7 +9,11 @@ namespace lab7
       try
       {
         Console.WriteLine("Введите размер матриц:");
-        int size = int.Parse(Console.ReadLine());
+        int size;
+        while (!int.TryParse(Console.ReadLine(), out size) || size <= 0)
+        {
+          Console.WriteLine("Некорректный ввод. Размер должен быть положительным числом. Попробуйте еще раз:");
+        }
 
         SquareMatrix matrix1 = new SquareMatrix(size);
         SquareMatrix matrix2 = new SquareMatrix(size);
@@ -17,7 +21,6 @@ namespace lab7
         Console.WriteLine("Матрица 1:\n" + matrix1);
         Console.WriteLine("Матрица 2:\n" + matrix2);
 
-        // Инициализация цепочки обработчиков
         var chain = SetupHandlers();
 
         while (true)
@@ -35,10 +38,19 @@ namespace lab7
           Console.WriteLine("10. Диагонализация матрицы 1");
           Console.WriteLine("0. Выход");
 
-          int choice = int.Parse(Console.ReadLine());
-          if (choice == 0) break;
+          int choice;
+          while (!int.TryParse(Console.ReadLine(), out choice))
+          {
+            Console.WriteLine("Некорректный ввод. Введите число от 0 до 10:");
+          }
 
-          // Запуск обработки через цепочку
+          if (choice == 0) break;
+          if (choice < 0 || choice > 10)
+          {
+            Console.WriteLine("Неверный выбор операции. Попробуйте еще раз.");
+            continue;
+          }
+
           chain.Handle(matrix1, matrix2, choice);
         }
       }
@@ -50,14 +62,24 @@ namespace lab7
 
     private static MatrixOperationHandler SetupHandlers()
     {
-      // Создаем обработчики
       var addition = new AdditionHandler();
       var subtraction = new SubtractionHandler();
+      var multiplication = new MultiplicationHandler();
+      var determinant = new DeterminantHandler();
+      var inverse = new InverseMatrixHandler();
+      var clone = new CloneHandler();
+      var compare = new CompareHandler();
+      var trace = new TraceHandler();
       var transpose = new TransposeHandler();
       var diagonalize = new DiagonalizeHandler(MatrixOperations.DemoDiagonalization);
 
-      // Строим цепочку
       addition.SetNext(subtraction)
+             .SetNext(multiplication)
+             .SetNext(determinant)
+             .SetNext(inverse)
+             .SetNext(clone)
+             .SetNext(compare)
+             .SetNext(trace)
              .SetNext(transpose)
              .SetNext(diagonalize);
 
