@@ -5,7 +5,7 @@ namespace lab7
   public class SquareMatrix : ICloneable, IComparable<SquareMatrix>
   {
     private static Random s_random = new Random();
-    private int[,] _matrix;
+    public int[,] _matrix;
     public int Size { get; private set; }
 
     public SquareMatrix(int size)
@@ -16,7 +16,7 @@ namespace lab7
       GenerateSquareMatrix();
     }
 
-    private void GenerateSquareMatrix()
+    public void GenerateSquareMatrix()
     {
       for (int row = 0; row < Size; ++row)
       {
