@@ -18,72 +18,72 @@ namespace lab7
 
     public void GenerateSquareMatrix()
     {
-      for (int row = 0; row < Size; ++row)
+      for (int rowIndex = 0; rowIndex < Size; ++rowIndex)
       {
-        for (int column = 0; column < Size; ++column)
+        for (int columnIndex = 0; columnIndex < Size; ++columnIndex)
         {
-          _matrix[row, column] = s_random.Next(1000);
+          _matrix[rowIndex, columnIndex] = s_random.Next(1000);
         }
       }
     }
 
-    public static SquareMatrix operator +(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static SquareMatrix operator +(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      if (matrixOne.Size != matrixTwo.Size)
+      if (firstMatrix.Size != secondMatrix.Size)
       {
         throw new MatrixSizeException("Матрицы должны быть одного размера");
       }
 
-      SquareMatrix result = new SquareMatrix(matrixOne.Size);
+      SquareMatrix result = new SquareMatrix(firstMatrix.Size);
 
-      for (int row = 0; row < matrixOne.Size; ++row)
+      for (int rowIndex = 0; rowIndex < firstMatrix.Size; ++rowIndex)
       {
-        for (int column = 0; column < matrixOne.Size; ++column)
+        for (int columnIndex = 0; columnIndex < firstMatrix.Size; ++columnIndex)
         {
-          result._matrix[row, column] = matrixOne._matrix[row, column] + matrixTwo._matrix[row, column];
-        }
-      }
-
-      return result;
-    }
-
-    public static SquareMatrix operator -(SquareMatrix matrixOne, SquareMatrix matrixTwo)
-    {
-      if (matrixOne.Size != matrixTwo.Size)
-      {
-        throw new MatrixSizeException("Матрицы должны быть одного размера");
-      }
-
-      SquareMatrix result = new SquareMatrix(matrixOne.Size);
-
-      for (int row = 0; row < matrixOne.Size; ++row)
-      {
-        for (int column = 0; column < matrixOne.Size; ++column)
-        {
-          result._matrix[row, column] = matrixOne._matrix[row, column] - matrixTwo._matrix[row, column];
+          result._matrix[rowIndex, columnIndex] = firstMatrix._matrix[rowIndex, columnIndex] + secondMatrix._matrix[rowIndex, columnIndex];
         }
       }
 
       return result;
     }
 
-    public static SquareMatrix operator *(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static SquareMatrix operator -(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      if (matrixOne.Size != matrixTwo.Size)
+      if (firstMatrix.Size != secondMatrix.Size)
       {
         throw new MatrixSizeException("Матрицы должны быть одного размера");
       }
 
-      SquareMatrix result = new SquareMatrix(matrixOne.Size);
+      SquareMatrix result = new SquareMatrix(firstMatrix.Size);
 
-      for (int row = 0; row < matrixOne.Size; ++row)
+      for (int rowIndex = 0; rowIndex < firstMatrix.Size; ++rowIndex)
       {
-        for (int column = 0; column < matrixOne.Size; ++column)
+        for (int columnIndex = 0; columnIndex < firstMatrix.Size; ++columnIndex)
         {
-          result._matrix[row, column] = 0;
-          for (int index = 0; index < matrixOne.Size; ++index)
+          result._matrix[rowIndex, columnIndex] = firstMatrix._matrix[rowIndex, columnIndex] - secondMatrix._matrix[rowIndex, columnIndex];
+        }
+      }
+
+      return result;
+    }
+
+    public static SquareMatrix operator *(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
+    {
+      if (firstMatrix.Size != secondMatrix.Size)
+      {
+        throw new MatrixSizeException("Матрицы должны быть одного размера");
+      }
+
+      SquareMatrix result = new SquareMatrix(firstMatrix.Size);
+
+      for (int rowIndex = 0; rowIndex < firstMatrix.Size; ++rowIndex)
+      {
+        for (int columnIndex = 0; columnIndex < firstMatrix.Size; ++columnIndex)
+        {
+          result._matrix[rowIndex, columnIndex] = 0;
+          for (int elementIndex = 0; elementIndex < firstMatrix.Size; ++elementIndex)
           {
-            result._matrix[row, column] += matrixOne._matrix[row, index] * matrixTwo._matrix[index, column];
+            result._matrix[rowIndex, columnIndex] += firstMatrix._matrix[rowIndex, elementIndex] * secondMatrix._matrix[elementIndex, columnIndex];
           }
         }
       }
@@ -107,83 +107,83 @@ namespace lab7
       double[,] inverseMatrix = new double[matrix.Size, matrix.Size];
       int[,] adjugateMatrix = GetAdjugateMatrix(matrix._matrix, matrix.Size);
 
-      for (int row = 0; row < matrix.Size; row++)
+      for (int rowIndex = 0; rowIndex < matrix.Size; rowIndex++)
       {
-        for (int column = 0; column < matrix.Size; column++)
+        for (int columnIndex = 0; columnIndex < matrix.Size; columnIndex++)
         {
-          inverseMatrix[row, column] = (double)adjugateMatrix[row, column] / determinant;
+          inverseMatrix[rowIndex, columnIndex] = (double)adjugateMatrix[rowIndex, columnIndex] / determinant;
         }
       }
 
       return inverseMatrix;
     }
 
-    public static bool operator >(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static bool operator >(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      if (matrixOne.Size != matrixTwo.Size)
+      if (firstMatrix.Size != secondMatrix.Size)
       {
         throw new MatrixSizeException("Матрицы должны быть одного размера");
       }
 
-      int sumOne = 0, sumTwo = 0;
-      for (int row = 0; row < matrixOne.Size; ++row)
+      int firstSum = 0, secondSum = 0;
+      for (int rowIndex = 0; rowIndex < firstMatrix.Size; ++rowIndex)
       {
-        for (int column = 0; column < matrixOne.Size; ++column)
+        for (int columnIndex = 0; columnIndex < firstMatrix.Size; ++columnIndex)
         {
-          sumOne += matrixOne._matrix[row, column];
-          sumTwo += matrixTwo._matrix[row, column];
+          firstSum += firstMatrix._matrix[rowIndex, columnIndex];
+          secondSum += secondMatrix._matrix[rowIndex, columnIndex];
         }
       }
 
-      return sumOne > sumTwo;
+      return firstSum > secondSum;
     }
 
-    public static bool operator <(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static bool operator <(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      if (matrixOne.Size != matrixTwo.Size)
+      if (firstMatrix.Size != secondMatrix.Size)
       {
         throw new MatrixSizeException("Матрицы должны быть одного размера");
       }
 
-      int sumOne = 0, sumTwo = 0;
-      for (int row = 0; row < matrixOne.Size; ++row)
+      int firstSum = 0, secondSum = 0;
+      for (int rowIndex = 0; rowIndex < firstMatrix.Size; ++rowIndex)
       {
-        for (int column = 0; column < matrixOne.Size; ++column)
+        for (int columnIndex = 0; columnIndex < firstMatrix.Size; ++columnIndex)
         {
-          sumOne += matrixOne._matrix[row, column];
-          sumTwo += matrixTwo._matrix[row, column];
+          firstSum += firstMatrix._matrix[rowIndex, columnIndex];
+          secondSum += secondMatrix._matrix[rowIndex, columnIndex];
         }
       }
 
-      return sumOne < sumTwo;
+      return firstSum < secondSum;
     }
 
-    public static bool operator >=(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static bool operator >=(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      return matrixOne > matrixTwo || matrixOne == matrixTwo;
+      return firstMatrix > secondMatrix || firstMatrix == secondMatrix;
     }
 
-    public static bool operator <=(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static bool operator <=(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      return matrixOne < matrixTwo || matrixOne == matrixTwo;
+      return firstMatrix < secondMatrix || firstMatrix == secondMatrix;
     }
 
-    public static bool operator ==(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static bool operator ==(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      if (ReferenceEquals(matrixOne, matrixTwo))
+      if (ReferenceEquals(firstMatrix, secondMatrix))
         return true;
 
-      if (matrixOne is null || matrixTwo is null)
+      if (firstMatrix is null || secondMatrix is null)
         return false;
 
-      if (matrixOne.Size != matrixTwo.Size)
+      if (firstMatrix.Size != secondMatrix.Size)
         return false;
 
-      for (int row = 0; row < matrixOne.Size; ++row)
+      for (int rowIndex = 0; rowIndex < firstMatrix.Size; ++rowIndex)
       {
-        for (int column = 0; column < matrixOne.Size; ++column)
+        for (int columnIndex = 0; columnIndex < firstMatrix.Size; ++columnIndex)
         {
-          if (matrixOne._matrix[row, column] != matrixTwo._matrix[row, column])
+          if (firstMatrix._matrix[rowIndex, columnIndex] != secondMatrix._matrix[rowIndex, columnIndex])
             return false;
         }
       }
@@ -191,9 +191,9 @@ namespace lab7
       return true;
     }
 
-    public static bool operator !=(SquareMatrix matrixOne, SquareMatrix matrixTwo)
+    public static bool operator !=(SquareMatrix firstMatrix, SquareMatrix secondMatrix)
     {
-      return !(matrixOne == matrixTwo);
+      return !(firstMatrix == secondMatrix);
     }
 
     public static explicit operator int(SquareMatrix matrix)
@@ -219,11 +219,11 @@ namespace lab7
     public override string ToString()
     {
       string result = "";
-      for (int row = 0; row < Size; ++row)
+      for (int rowIndex = 0; rowIndex < Size; ++rowIndex)
       {
-        for (int column = 0; column < Size; ++column)
+        for (int columnIndex = 0; columnIndex < Size; ++columnIndex)
         {
-          result += _matrix[row, column] + "\t";
+          result += _matrix[rowIndex, columnIndex] + "\t";
         }
         result += "\n";
       }
@@ -235,12 +235,12 @@ namespace lab7
       if (other == null) return 1;
 
       int thisSum = 0, otherSum = 0;
-      for (int row = 0; row < Size; ++row)
+      for (int rowIndex = 0; rowIndex < Size; ++rowIndex)
       {
-        for (int column = 0; column < Size; ++column)
+        for (int columnIndex = 0; columnIndex < Size; ++columnIndex)
         {
-          thisSum += _matrix[row, column];
-          otherSum += other._matrix[row, column];
+          thisSum += _matrix[rowIndex, columnIndex];
+          otherSum += other._matrix[rowIndex, columnIndex];
         }
       }
 
@@ -259,11 +259,11 @@ namespace lab7
     public override int GetHashCode()
     {
       int hash = 17;
-      for (int row = 0; row < Size; ++row)
+      for (int rowIndex = 0; rowIndex < Size; ++rowIndex)
       {
-        for (int column = 0; column < Size; ++column)
+        for (int columnIndex = 0; columnIndex < Size; ++columnIndex)
         {
-          hash = hash * 23 + _matrix[row, column].GetHashCode();
+          hash = hash * 23 + _matrix[rowIndex, columnIndex].GetHashCode();
         }
       }
       return hash;
@@ -272,11 +272,11 @@ namespace lab7
     public object Clone()
     {
       SquareMatrix clone = new SquareMatrix(Size);
-      for (int row = 0; row < Size; ++row)
+      for (int rowIndex = 0; rowIndex < Size; ++rowIndex)
       {
-        for (int column = 0; column < Size; ++column)
+        for (int columnIndex = 0; columnIndex < Size; ++columnIndex)
         {
-          clone._matrix[row, column] = _matrix[row, column];
+          clone._matrix[rowIndex, columnIndex] = _matrix[rowIndex, columnIndex];
         }
       }
       return clone;
@@ -293,10 +293,10 @@ namespace lab7
       int determinant = 0;
       int sign = 1;
 
-      for (int column = 0; column < size; column++)
+      for (int columnIndex = 0; columnIndex < size; columnIndex++)
       {
-        int[,] subMatrix = GetSubMatrix(matrix, size, 0, column);
-        determinant += sign * matrix[0, column] * CalculateDeterminant(subMatrix, size - 1);
+        int[,] subMatrix = GetSubMatrix(matrix, size, 0, columnIndex);
+        determinant += sign * matrix[0, columnIndex] * CalculateDeterminant(subMatrix, size - 1);
         sign = -sign;
       }
 
@@ -307,13 +307,13 @@ namespace lab7
     {
       int[,] adjugateMatrix = new int[size, size];
 
-      for (int row = 0; row < size; row++)
+      for (int rowIndex = 0; rowIndex < size; rowIndex++)
       {
-        for (int column = 0; column < size; column++)
+        for (int columnIndex = 0; columnIndex < size; columnIndex++)
         {
-          int[,] subMatrix = GetSubMatrix(matrix, size, row, column);
-          int sign = ((row + column) % 2 == 0) ? 1 : -1;
-          adjugateMatrix[column, row] = sign * CalculateDeterminant(subMatrix, size - 1);
+          int[,] subMatrix = GetSubMatrix(matrix, size, rowIndex, columnIndex);
+          int sign = ((rowIndex + columnIndex) % 2 == 0) ? 1 : -1;
+          adjugateMatrix[columnIndex, rowIndex] = sign * CalculateDeterminant(subMatrix, size - 1);
         }
       }
 
@@ -325,15 +325,15 @@ namespace lab7
       int[,] subMatrix = new int[size - 1, size - 1];
       int row = 0, column = 0;
 
-      for (int i = 0; i < size; i++)
+      for (int rowIndex = 0; rowIndex < size; rowIndex++)
       {
-        if (i == rowToRemove) continue;
+        if (rowIndex == rowToRemove) continue;
 
         column = 0;
-        for (int j = 0; j < size; j++)
+        for (int columnIndex = 0; columnIndex < size; columnIndex++)
         {
-          if (j == columnToRemove) continue;
-          subMatrix[row, column] = matrix[i, j];
+          if (columnIndex == columnToRemove) continue;
+          subMatrix[row, column] = matrix[rowIndex, columnIndex];
           column++;
         }
         row++;

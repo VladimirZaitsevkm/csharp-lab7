@@ -23,9 +23,9 @@ namespace lab7
     {
       int trace = 0;
 
-      for (int i = 0; i < matrix.Size; ++i)
+      for (int index = 0; index < matrix.Size; ++index)
       {
-        trace += matrix._matrix[i, i];
+        trace += matrix._matrix[index, index];
       }
 
       return trace;

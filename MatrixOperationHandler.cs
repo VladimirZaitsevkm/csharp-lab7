@@ -10,11 +10,11 @@ namespace lab7
     {
       SquareMatrix result = new SquareMatrix(matrix.Size);
 
-      for (int i = 0; i < matrix.Size; i++)
+      for (int rowIndex = 0; rowIndex < matrix.Size; rowIndex++)
       {
-        for (int j = 0; j < matrix.Size; j++)
+        for (int columnIndex = 0; columnIndex < matrix.Size; columnIndex++)
         {
-          result._matrix[i, j] = (i == j) ? matrix._matrix[i, j] : 0;
+          result._matrix[rowIndex, columnIndex] = (rowIndex == columnIndex) ? matrix._matrix[rowIndex, columnIndex] : 0;
         }
       }
 
@@ -107,11 +107,11 @@ namespace lab7
         {
           double[,] inverse = ~matrix1;
           Console.WriteLine("Обратная матрица 1:");
-          for (int i = 0; i < matrix1.Size; i++)
+          for (int rowIndex = 0; rowIndex < matrix1.Size; rowIndex++)
           {
-            for (int j = 0; j < matrix1.Size; j++)
+            for (int columnIndex = 0; columnIndex < matrix1.Size; columnIndex++)
             {
-              Console.Write(inverse[i, j].ToString("F2") + "\t");
+              Console.Write(inverse[rowIndex, columnIndex].ToString("F2") + "\t");
             }
             Console.WriteLine();
           }
